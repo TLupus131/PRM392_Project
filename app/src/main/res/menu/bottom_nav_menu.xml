@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_magnifying"
+        android:title="Tìm kiếm" />
+
+    <item
+        android:id="@+id/navigation_bookmark"
+        android:icon="@drawable/ic_bookmark"
+        android:title="Đã lưu" />
+
+    <item
+        android:id="@+id/navigation_reservation"
+        android:icon="@drawable/ic_suitcase"
+        android:title="Đặt chỗ" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_circle_user"
+        android:title="Đăng nhập" />
+</menu>
