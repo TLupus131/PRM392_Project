@@ -24,16 +24,19 @@ import java.util.Locale;
 
 public class RegionAdapter extends BaseAdapter {
 
-    private Context context;
-    private List<Region> list;
-    private Button button;
-    private Dialog dialog;
+    private final Context context;
+    private final List<Region> list;
+    private final Button button;
+    private final Dialog dialog;
+    private final TextView latitude, longitude;
 
-    public RegionAdapter(Context context, List<Region> list, Button button, Dialog dialog) {
+    public RegionAdapter(Context context, List<Region> list, Button button, Dialog dialog, TextView latitude, TextView longitude) {
         this.context = context;
         this.list = list;
         this.button = button;
         this.dialog = dialog;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Override
@@ -72,6 +75,8 @@ public class RegionAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (region != null) {
                     button.setText(region.getName());
+                    latitude.setText(region.getLatitude());
+                    longitude.setText(region.getLongitude());
                 }
                 dialog.cancel();
             }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.ui.login.LoginStep1Fragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:layout_margin="10dp"
+        android:text="Đăng nhập để dễ dàng truy cập\nthông tin chuyến đi"/>
+    <Button
+        android:id="@+id/btnToLogin2"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/regular_button"
+        android:layout_gravity="center"
+        android:theme="@style/Theme.BookingApp2"
+        android:textColor="@color/white"
+        android:text="Đăng nhập với email"
+        android:layout_width="300dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="50dp"/>
+    <Button
+        android:id="@+id/btnToRegister"
+        android:background="@drawable/regular_button"
+        android:layout_gravity="center"
+        android:theme="@style/Theme.BookingApp2"
+        android:textColor="@color/white"
+        android:text="Tạo tài khoản với email"
+        android:layout_width="300dp"
+        android:layout_height="50dp"/>
+
+</LinearLayout>

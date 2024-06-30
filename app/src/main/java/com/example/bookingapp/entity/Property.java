@@ -1,8 +1,9 @@
 package com.example.bookingapp.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Property {
+public class Property implements Serializable {
     private int id;
     private String name;
     private int adultCapacity;
@@ -16,13 +17,35 @@ public class Property {
     private int doubleBed;
     private int bedRoom;
     private int quantity;
-
+    private String type;
     private List<String> listImage;
+
+    private List<Comment> listComment;
+
+    private String regionName;
 
     public Property() {
     }
 
-    public Property(int id, String name, int adultCapacity, int childrenCapacity, boolean petsAllowed, String address, Double price, Double discount, int star, int singleBed, int doubleBed, int bedRoom, int quantity, List<String> listImage) {
+    public Property(int id, String name, int adultCapacity, int childrenCapacity, boolean petsAllowed, String address, Double price, Double discount, int star, int singleBed, int doubleBed, int bedRoom, int quantity, String type, List<String> listImage) {
+        this.id = id;
+        this.name = name;
+        this.adultCapacity = adultCapacity;
+        this.childrenCapacity = childrenCapacity;
+        this.petsAllowed = petsAllowed;
+        this.address = address;
+        this.price = price;
+        this.discount = discount;
+        this.star = star;
+        this.singleBed = singleBed;
+        this.doubleBed = doubleBed;
+        this.bedRoom = bedRoom;
+        this.quantity = quantity;
+        this.type = type;
+        this.listImage = listImage;
+    }
+
+    public Property(int id, String name, int adultCapacity, int childrenCapacity, boolean petsAllowed, String address, Double price, Double discount, int star, int singleBed, int doubleBed, int bedRoom, int quantity, List<String> listImage, List<Comment> listComment, String type, String regionName) {
         this.id = id;
         this.name = name;
         this.adultCapacity = adultCapacity;
@@ -37,6 +60,33 @@ public class Property {
         this.bedRoom = bedRoom;
         this.quantity = quantity;
         this.listImage = listImage;
+        this.listComment = listComment;
+        this.type = type;
+        this.regionName = regionName;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    public List<Comment> getListComment() {
+        return listComment;
+    }
+
+    public void setListComment(List<Comment> listComment) {
+        this.listComment = listComment;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public List<String> getListImage() {

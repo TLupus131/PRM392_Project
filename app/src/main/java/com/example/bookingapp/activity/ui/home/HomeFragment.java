@@ -37,8 +37,8 @@ public class HomeFragment extends Fragment {
     }
 
     int[][] states = new int[][] {
-            new int[] { android.R.attr.state_selected }, // Trạng thái được chọn
-            new int[] { -android.R.attr.state_selected } // Trạng thái không được chọn
+            new int[] { android.R.attr.state_selected },
+            new int[] { -android.R.attr.state_selected }
     };
 
     int[] colors = new int[] {

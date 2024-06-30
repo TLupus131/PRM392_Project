@@ -18,7 +18,7 @@ import java.util.List;
 
 public class FutureTripAdapter extends ArrayAdapter<FutureTrip> {
 
-    private Context mContext;
+    private final Context mContext;
 
     public FutureTripAdapter(Context context, List<FutureTrip> trips) {
         super(context, 0, trips);

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="150dp"
+        android:layout_height="7dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_horizontal_rule"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/chooseTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="20dp"
+        android:text="Sắp xếp theo"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/radioSortGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioTopChoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/black"
+            android:layoutDirection="rtl"
+            android:padding="20dp"
+            android:text="Lựa chọn hàng đầu của chúng tôi"
+            android:textSize="18dp" />
+
+        <RadioButton
+            android:id="@+id/radioLowToHigh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/black"
+            android:layoutDirection="rtl"
+            android:padding="20dp"
+            android:text="Giá (thấp đến cao)"
+            android:textSize="18dp" />
+
+        <RadioButton
+            android:id="@+id/radioHighToLow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/black"
+            android:layoutDirection="rtl"
+            android:padding="20dp"
+            android:text="Giá (cao đến thấp)"
+            android:textSize="18dp" />
+
+        <RadioButton
+            android:id="@+id/radioCustomerRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/black"
+            android:layoutDirection="rtl"
+            android:padding="20dp"
+            android:text="Điểm đánh giá của khách"
+            android:textSize="18dp" />
+    </RadioGroup>
+</LinearLayout>

@@ -2,9 +2,9 @@ package com.example.bookingapp.entity;
 
 public class FutureTrip {
 
-    private String name;
-    private String date;
-    private String status;
+    private final String name;
+    private final String date;
+    private final String status;
 
     public FutureTrip(String name, String date, String status) {
         this.name = name;

@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -58,16 +63,18 @@ public class StayFragment extends Fragment {
 
     private FragmentStayBinding binding;
     Button btnChooseDate, btnChooseCustomer, btnChooseLocation, btnSearch;
-    ListView lvFutureTrip;
     private List<Region> regionList;
     private RegionAdapter regionAdapter;
     private Date currentCheckInDate, currentCheckOutDate;
     private int currentRoom, currentAdult, currentChildren;
     private boolean currentPetAllow;
+    private ProgressBar progressBar;
+    private TextView tvEmptyList, tvLatitude, tvLongitude;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        StayViewModel stayViewModel =
+        StayViewModel stayViewModels =
                 new ViewModelProvider(this).get(StayViewModel.class);
 
         binding = FragmentStayBinding.inflate(inflater, container, false);
@@ -83,13 +90,8 @@ public class StayFragment extends Fragment {
         btnChooseCustomer = view.findViewById(R.id.btnChooseCustomerNumber);
         btnChooseLocation = view.findViewById(R.id.btnChooseLocation);
         btnSearch = view.findViewById(R.id.btnSearch);
-        lvFutureTrip = view.findViewById(R.id.lvFutureTrip);
-
-        List<FutureTrip> futureTrips = new ArrayList<>();
-        futureTrips.add(new FutureTrip("MH Homestay Hạ Long", "5 thg 7 - 7 thg 7", "Đã xác nhận"));
-
-        FutureTripAdapter adapter = new FutureTripAdapter(getContext(), futureTrips);
-        lvFutureTrip.setAdapter(adapter);
+        tvLatitude = view.findViewById(R.id.tvLatitude);
+        tvLongitude = view.findViewById(R.id.tvLongitude);
 
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
@@ -138,6 +140,8 @@ public class StayFragment extends Fragment {
 
     private void searhProperties() {
         String location = btnChooseLocation.getText().toString();
+        String latitude = tvLatitude.getText().toString();
+        String longitude = tvLongitude.getText().toString();
         Intent intent = new Intent(getContext(), ListPropertyActivity.class);
         intent.putExtra("location", location);
         intent.putExtra("checkInDate", currentCheckInDate);
@@ -146,6 +150,8 @@ public class StayFragment extends Fragment {
         intent.putExtra("adult", currentAdult);
         intent.putExtra("children", currentChildren);
         intent.putExtra("petAllow", currentPetAllow);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
         startActivity(intent);
     }
 
@@ -275,11 +281,7 @@ public class StayFragment extends Fragment {
                 currentRoom = Integer.parseInt(edtRoom.getText().toString());
                 currentAdult = Integer.parseInt(edtAdult.getText().toString());
                 currentChildren = Integer.parseInt(edtChildren.getText().toString());
-                if (toggleButton.isChecked()) {
-                    currentPetAllow = true;
-                } else {
-                    currentPetAllow = false;
-                }
+                currentPetAllow = toggleButton.isChecked();
                 btnChooseCustomer.setText(rooms + " phòng - " + adults + " người lớn - " + children + " trẻ em");
                 dialog.cancel();
             }
@@ -330,15 +332,19 @@ public class StayFragment extends Fragment {
                 }
             }
         });
-
     }
+
+    private Handler handler = new Handler();
+    private Runnable apiCallRunnable;
+    private String searchText;
 
     private void showLocation() {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottom_sheet_layout_1);
         dialog.show();
-
+        tvEmptyList = dialog.findViewById(R.id.tvEmptyList);
+        progressBar = dialog.findViewById(R.id.progressBarSearchRegion);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.LocationAnimation;
@@ -353,6 +359,34 @@ public class StayFragment extends Fragment {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         ImageButton btnReturn = dialog.findViewById(R.id.btnReturn);
+        EditText editText = dialog.findViewById(R.id.edt_search_region);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (apiCallRunnable != null) {
+                    handler.removeCallbacks(apiCallRunnable);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                apiCallRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!s.toString().isEmpty()) {
+                            searchText = s.toString();
+                            tvEmptyList.setVisibility(View.GONE);
+                            new FetchRegion().execute();
+                        }
+                    }
+                };
+                handler.postDelayed(apiCallRunnable, 1000);
+            }
+        });
         btnReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -362,18 +396,22 @@ public class StayFragment extends Fragment {
 
         ListView listView = dialog.findViewById(R.id.lvSearchRegion);
         regionList = new ArrayList<>();
-        regionAdapter = new RegionAdapter(getActivity(), regionList, btnChooseLocation, dialog);
+        regionAdapter = new RegionAdapter(getActivity(), regionList, btnChooseLocation, dialog, tvLatitude, tvLongitude);
         listView.setAdapter(regionAdapter);
-        new FetchRegion().execute();
     }
 
     private class FetchRegion extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected String doInBackground(Void... voids) {
             StringBuilder response = new StringBuilder();
             try {
-                URL url = new URL("http://" + IPConfig.IPv4 + ":8080/api/regions");
+                URL url = new URL("http://" + IPConfig.IPv4 + ":8080/api/regions/search?text=" + searchText);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -392,6 +430,8 @@ public class StayFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+            progressBar.setVisibility(View.GONE);
+            regionList.clear();
             if (s != null && !s.isEmpty()) {
                 try {
                     JSONArray propertiesArray = new JSONArray(s);
@@ -401,13 +441,18 @@ public class StayFragment extends Fragment {
                         int id = pObject.getInt("id");
                         String name = pObject.getString("name");
                         String description = pObject.getString("description");
-                        Region region = new Region(id, name, description);
+                        String latitude = pObject.getString("latitude");
+                        String longitude = pObject.getString("longitude");
+                        Region region = new Region(id, name, description, latitude, longitude);
                         regionList.add(region);
                     }
                     regionAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+            }
+            if (regionList.isEmpty()) {
+                tvEmptyList.setVisibility(View.VISIBLE);
             }
         }
     }

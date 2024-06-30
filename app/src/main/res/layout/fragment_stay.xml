@@ -137,10 +137,25 @@
         </TableLayout>
 
         <TextView
-            android:id="@+id/textViewFutureTrip"
+            android:id="@+id/tvLatitude"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="null"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvLongitude"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="null"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:id="@+id/textViewFlashSale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chuyến đi sắp tới"
+            android:text="Lựa chọn cho phút chót"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -152,17 +167,19 @@
             app:layout_constraintVertical_bias="0.111" />
 
         <ListView
-            android:id="@+id/lvFutureTrip"
+            android:id="@+id/lvFlashSale"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_height="100dp"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="40dp"
+            android:orientation="horizontal"
+            android:scrollbars="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewFutureTrip"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFlashSale"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -175,9 +192,9 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.141"
+            app:layout_constraintHorizontal_bias="0.111"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lvFutureTrip"
+            app:layout_constraintTop_toBottomOf="@+id/lvFlashSale"
             app:layout_constraintVertical_bias="0.155" />
 
         <FrameLayout
@@ -192,19 +209,19 @@
 
             <ImageButton
                 android:layout_width="match_parent"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginTop="20dp"
                 android:layout_height="164dp"
-                android:src="@drawable/travel"
-                android:background="@android:color/transparent" />
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="50dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/travel" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_marginLeft="55dp"
-                android:layout_marginRight="55dp"
                 android:layout_height="164dp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="55dp"
                 android:text="\n\n\n\n\nBài viết về du lịch"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
