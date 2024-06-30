@@ -53,6 +53,7 @@ public class BookingFormActivity extends AppCompatActivity {
         tvTotalPrice = findViewById(R.id.totalPrice);
         tvFinalPrice = findViewById(R.id.finalPrice);
         btnRollback = findViewById(R.id.btnRollback2);
+        autoCompleteTextView = findViewById(R.id.actvNationality);
 
         property = (Property) getIntent().getSerializableExtra("property");
         room = getIntent().getIntExtra("room", 0);
@@ -62,20 +63,12 @@ public class BookingFormActivity extends AppCompatActivity {
         checkOutDate = (Date) getIntent().getSerializableExtra("checkOutDate");
         totalPrice = getIntent().getStringExtra("totalPrice");
         finalPrice = getIntent().getStringExtra("finalPrice");
-
         nationalityAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
                 getResources().getStringArray(R.array.countries_array));
         AutoCompleteTextView actvNationality = findViewById(R.id.actvNationality);
         actvNationality.setAdapter(nationalityAdapter);
-
-        actvNationality.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedCountry = (String) parent.getItemAtPosition(position);
-            }
-        });
 
         authUser = UserManager.getInstance().getAuthUser();
 
@@ -105,6 +98,7 @@ public class BookingFormActivity extends AppCompatActivity {
 
         btnToBookingConfirmation.setOnClickListener(v -> {
             if (validate()) {
+                selectedCountry = actvNationality.getText().toString();
                 Intent intent = new Intent(BookingFormActivity.this, BookingConfirmActivity.class);
                 intent.putExtra("property", property);
                 intent.putExtra("room", room);

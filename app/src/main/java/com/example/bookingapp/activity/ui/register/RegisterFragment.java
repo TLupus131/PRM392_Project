@@ -96,6 +96,7 @@ public class RegisterFragment extends Fragment {
                 edtEmail.setBackgroundResource(R.drawable.custom_box_border_success);
                 edtPassword.setBackgroundResource(R.drawable.custom_box_border_success);
                 edtConfirm.setBackgroundResource(R.drawable.custom_box_border_success);
+                rgGender.setBackgroundResource(R.drawable.custom_box_border_success);
                 boolean validate = true;
                 if (TextUtils.isEmpty(edtEmail.getText().toString())) {
                     Toast.makeText(getContext(), "Please enter your email", Toast.LENGTH_LONG).show();

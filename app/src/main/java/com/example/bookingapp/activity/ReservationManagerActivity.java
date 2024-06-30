@@ -99,7 +99,6 @@ public class ReservationManagerActivity extends AppCompatActivity {
             currentCheckInDate = reservation.getCheckInDate();
             currentCheckOutDate = reservation.getCheckOutDate();
         }
-
         tvReservationDate.setText(date);
 
         btnRollback.setOnClickListener(new View.OnClickListener() {
@@ -324,6 +323,12 @@ public class ReservationManagerActivity extends AppCompatActivity {
                     }
                     Property property = new Property(object.getInt("id"), object.getString("name"), object.getInt("adultCapacity"), object.getInt("childrenCapacity"), object.getBoolean("petsAllowed"), object.getString("address"), object.getDouble("price"), object.getDouble("discount"), object.getInt("star"), object.getInt("singleBed"), object.getInt("doubleBed"), object.getInt("bedRoom"), object.getInt("quantity"), object.getJSONObject("propertyType").getString("name"), imgList);
                     reservation = new Reservation(id, userId, property, firstname, lastname, email, nationality, phone, quantity, checkInDate, checkOutDate, price);
+                    tvPropertyName.setText(reservation.getProperty().getName());
+                    tvPropertyLocation.setText(reservation.getProperty().getAddress());
+                    recyclerView.setLayoutManager(new LinearLayoutManager(ReservationManagerActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                    recyclerView.setAdapter(new IconAdapter(ReservationManagerActivity.this, reservation.getProperty().getStar()));
+                    currentCheckInDate = reservation.getCheckInDate();
+                    currentCheckOutDate = reservation.getCheckOutDate();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }

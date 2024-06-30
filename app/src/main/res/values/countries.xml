@@ -6,6 +6,8 @@
         <item>Algeria</item>
         <item>Andorra</item>
         <item>Angola</item>
+        <item>America</item>
+        <item>Argentina</item>
 
         <!-- B -->
         <item>Bahamas</item>
@@ -13,6 +15,8 @@
         <item>Bangladesh</item>
         <item>Barbados</item>
         <item>Belarus</item>
+        <item>Belgium</item>
+        <item>Brazil</item>
 
         <!-- C -->
         <item>Canada</item>
@@ -33,6 +37,7 @@
         <item>El Salvador</item>
         <item>Equatorial Guinea</item>
         <item>Eritrea</item>
+        <item>England</item>
 
         <!-- F -->
         <item>Fiji</item>
@@ -127,8 +132,6 @@
         <item>Uganda</item>
         <item>Ukraine</item>
         <item>United Arab Emirates</item>
-        <item>United Kingdom</item>
-        <item>United States</item>
 
         <!-- V -->
         <item>Vanuatu</item>
