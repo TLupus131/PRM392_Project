@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/header_layout6"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#003A93"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnRollback6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="#003A93"
+            android:src="@drawable/ic_arrow_back2" />
+
+        <TextView
+            android:id="@+id/tvTitleHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@id/btnRollback6"
+            android:text="Holder"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_layout6"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Holder *"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/edtHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvHolder"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/custom_box_border"
+        android:hint="Holder"
+        android:padding="15dp" />
+
+    <RelativeLayout
+        android:id="@+id/footerLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <Button
+                android:layout_margin="15dp"
+                android:id="@+id/btnSaveUser"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/custom_button"
+                android:text="Lưu"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:theme="@style/Theme.BookingApp2" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

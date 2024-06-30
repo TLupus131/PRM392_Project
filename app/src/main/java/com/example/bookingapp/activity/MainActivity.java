@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
                     boolean gender = userObject.getBoolean("gender");
                     String dob = userObject.getString("dob");
                     String role = userObject.getString("role");
-                    User user = new User(id, name, avatar, email, address, nationality, phone, gender, dob, role);
+                    String password = userObject.getString("password");
+                    User user = new User(id, name, avatar, email, password, address, nationality, phone, gender, dob, role);
                     UserManager.getInstance().setAuthUser(user);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);

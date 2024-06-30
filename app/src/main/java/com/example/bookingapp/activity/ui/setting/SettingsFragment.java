@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingapp.R;
+import com.example.bookingapp.activity.AccountManagerActivity;
 import com.example.bookingapp.activity.LoginActivity;
 import com.example.bookingapp.activity.MainActivity;
 import com.example.bookingapp.adapter.ButtonIconAdapter;
@@ -63,7 +64,7 @@ public class SettingsFragment extends Fragment {
         itemList = new ArrayList<>();
         User user = UserManager.getInstance().getAuthUser();
         if (user != null) {
-            itemList.add(new Item(R.drawable.ic_user, "Quản lý tài khoản"));
+            itemList.add(new Item(R.drawable.ic_user, "Quản lý tài khoản", AccountManagerActivity.class));
             button.setVisibility(View.GONE);
             textView.setVisibility(View.VISIBLE);
             textView.setText(user.getEmail());

@@ -16,9 +16,14 @@
         android:theme="@style/Base.Theme.BookingApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".activity.AccountManagerActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD8RbkGA-lfxogT5T0uTECJjSilzZaEkb4" />
+
         <activity
             android:name=".activity.ReservationManagerActivity"
             android:exported="false" />
