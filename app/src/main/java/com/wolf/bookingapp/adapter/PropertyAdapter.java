@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wolf.bookingapp.R;
-import com.example.bookingapp.activity.PropertyDetailActivity;
+import com.wolf.bookingapp.activity.PropertyDetailActivity;
 import com.wolf.bookingapp.entity.Property;
 import com.wolf.bookingapp.entity.User;
 import com.squareup.picasso.Picasso;
