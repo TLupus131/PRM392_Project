@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.bookingapp"
+    namespace = "com.wolf.bookingapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.bookingapp"
+        applicationId = "com.wolf.bookingapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
