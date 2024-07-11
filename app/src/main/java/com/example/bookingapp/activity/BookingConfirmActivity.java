@@ -67,7 +67,7 @@ public class BookingConfirmActivity extends AppCompatActivity {
     private ImageButton btnRollback;
     private String totalPrice, finalPrice, firstname, lastname, phone, email, nationality;
     private Date checkInDate, checkOutDate;
-    private int room, adult, children;
+    private int room, adult, children, days;
     private Property property;
     private Button btnMakeReservation;
     private User authUser = null;
@@ -122,6 +122,11 @@ public class BookingConfirmActivity extends AppCompatActivity {
         String endMonth = monthFormat.format(endDate.getTime());
         String formattedCheckInDate = sd + ", " + startDay + " thg " + startMonth;
         String formattedCheckOutDate = ed + ", " + endDay + " thg " + endMonth;
+
+        long startTime = startDate.getTimeInMillis();
+        long endTime = endDate.getTimeInMillis();
+        long diffTime = endTime - startTime;
+        days = (int) (diffTime / (1000 * 60 * 60 * 24));
 
         total_price.setText(totalPrice);
         total_price.setPaintFlags(total_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -201,7 +206,7 @@ public class BookingConfirmActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        ReservationResponse reservationResponse = new ReservationResponse(authUser.getId(), property.getId(), firstname, lastname, email, nationality, phone, room, String.valueOf(checkInDate), String.valueOf(checkOutDate), price);
+        ReservationResponse reservationResponse = new ReservationResponse(authUser.getId(), property.getId(), firstname, lastname, email, nationality, phone, room, String.valueOf(checkInDate), String.valueOf(checkOutDate), price, adult, children, days);
 
         Gson gson = new GsonBuilder()
                 .setLenient()

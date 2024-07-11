@@ -3,6 +3,7 @@ package com.example.bookingapp.activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,6 +11,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -114,6 +117,22 @@ public class BookingFormActivity extends AppCompatActivity {
                 intent.putExtra("firstname", edtFormFirstName.getText().toString());
                 intent.putExtra("lastname", edtFormLastName.getText().toString());
                 startActivity(intent);
+            }
+        });
+
+        setFocusEditText(edtFormFirstName);
+        setFocusEditText(edtFormLastName);
+        setFocusEditText(edtFormEmail);
+        setFocusEditText(edtFormPhone);
+
+    }
+
+    private void setFocusEditText(EditText edt) {
+        edt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                LinearLayout layout = findViewById(R.id.layoutContent);
+                layout.setMinimumHeight(300);
             }
         });
     }

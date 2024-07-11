@@ -163,7 +163,7 @@ public class ReservationFragment extends Fragment {
                         int userId = pObject.getJSONObject("user").getInt("id");
                         JSONObject object = pObject.getJSONObject("property");
                         JSONArray imgs = object.getJSONArray("propertyImgs");
-                        String firstname = pObject.getString("firt_name");
+                        String firstname = pObject.getString("first_name");
                         String lastname = pObject.getString("last_name");
                         String email = pObject.getString("email");
                         String nationality = pObject.getString("nationality");
@@ -187,7 +187,6 @@ public class ReservationFragment extends Fragment {
             }
             if (list.isEmpty()) {
                 ivListReservationEmpty.setVisibility(View.VISIBLE);
-                tvListReservationEmpty.setVisibility(View.VISIBLE);
                 tvListReservationEmpty2.setVisibility(View.VISIBLE);
             }
         }

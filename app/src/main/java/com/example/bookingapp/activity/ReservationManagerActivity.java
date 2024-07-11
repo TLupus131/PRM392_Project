@@ -308,7 +308,7 @@ public class ReservationManagerActivity extends AppCompatActivity {
                     int userId = pObject.getJSONObject("user").getInt("id");
                     JSONObject object = pObject.getJSONObject("property");
                     JSONArray imgs = object.getJSONArray("propertyImgs");
-                    String firstname = pObject.getString("firt_name");
+                    String firstname = pObject.getString("first_name");
                     String lastname = pObject.getString("last_name");
                     String email = pObject.getString("email");
                     String nationality = pObject.getString("nationality");

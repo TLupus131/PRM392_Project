@@ -362,6 +362,18 @@
         </LinearLayout>
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="70dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ic_message"
+        app:backgroundTint="#003A92"
+        app:tintMode="@null" />
+
     <RelativeLayout
         android:id="@+id/footerBtn"
         android:layout_width="match_parent"

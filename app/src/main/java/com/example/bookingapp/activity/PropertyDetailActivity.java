@@ -1,10 +1,16 @@
 package com.example.bookingapp.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +42,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
@@ -68,6 +76,7 @@ public class PropertyDetailActivity extends AppCompatActivity {
     private EditText edtComment;
     private User authUser = null;
     private MapView mapView;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +92,7 @@ public class PropertyDetailActivity extends AppCompatActivity {
         totalPrice = getIntent().getStringExtra("totalPrice");
         finalPrice = getIntent().getStringExtra("finalPrice");
 
+        fab = findViewById(R.id.fab);
         tvAddress = findViewById(R.id.tvAddress);
         mapView = findViewById(R.id.propertyMap);
         btnSubmitComment = findViewById(R.id.btnSubmitComment);
@@ -109,6 +119,16 @@ public class PropertyDetailActivity extends AppCompatActivity {
         tvAddress.setText(property.getAddress());
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
+
+        fab.setImageResource(R.drawable.ic_message);
+        fab.setColorFilter(ContextCompat.getColor(PropertyDetailActivity.this, android.R.color.white), PorterDuff.Mode.SRC_IN);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMessageLayout();
+            }
+        });
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -216,6 +236,26 @@ public class PropertyDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void openMessageLayout() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.contact_layout);
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.CalendarAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        ImageButton button = dialog.findViewById(R.id.btnRollback1);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+
     }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
