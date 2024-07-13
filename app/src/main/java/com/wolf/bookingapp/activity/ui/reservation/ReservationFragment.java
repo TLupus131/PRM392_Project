@@ -11,20 +11,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.wolf.bookingapp.R;
-import com.wolf.bookingapp.adapter.PropertyAdapter;
 import com.wolf.bookingapp.adapter.ReservationAdapter;
 import com.wolf.bookingapp.config.IPConfig;
 import com.wolf.bookingapp.databinding.FragmentReservationBinding;
-import com.wolf.bookingapp.entity.Comment;
 import com.wolf.bookingapp.entity.Property;
-import com.wolf.bookingapp.entity.Region;
 import com.wolf.bookingapp.entity.Reservation;
 import com.wolf.bookingapp.entity.User;
 import com.wolf.bookingapp.entity.UserManager;

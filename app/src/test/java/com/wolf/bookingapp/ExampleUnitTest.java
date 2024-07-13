@@ -1,4 +1,4 @@
-package com.example.bookingapp;
+package com.wolf.bookingapp;
 
 import org.junit.Test;
 

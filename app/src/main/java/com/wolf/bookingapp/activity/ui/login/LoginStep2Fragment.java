@@ -2,6 +2,8 @@ package com.wolf.bookingapp.activity.ui.login;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,14 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import android.content.ContextWrapper;
 import com.wolf.bookingapp.R;
 import com.wolf.bookingapp.activity.MainActivity;
 import com.wolf.bookingapp.activity.ui.register.RegisterFragment;
@@ -32,10 +31,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -86,20 +83,37 @@ public class LoginStep2Fragment extends Fragment {
                 edtEmail.setBackgroundResource(R.drawable.custom_box_border_success);
                 edtPassword.setBackgroundResource(R.drawable.custom_box_border_success);
                 boolean validate = true;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 if (TextUtils.isEmpty(edtEmail.getText().toString())) {
-                    Toast.makeText(getContext(), "Please enter your email", Toast.LENGTH_LONG).show();
-                    edtEmail.setError("Email is required!");
-                    edtEmail.requestFocus();
-                    edtEmail.setBackgroundResource(R.drawable.custom_box_border_failed);
+                    builder.setMessage("Please enter your email")
+                            .setTitle("Validation Error")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    edtEmail.setError("Email is required!");
+                                    edtEmail.requestFocus();
+                                    edtEmail.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                }
+                            });
+                    AlertDialog emailDialog = builder.create();
+                    emailDialog.show();
                     validate = false;
                 }
                 if (TextUtils.isEmpty(edtPassword.getText().toString())) {
-                    Toast.makeText(getContext(), "Please enter your password", Toast.LENGTH_LONG).show();
-                    edtPassword.setError("Password is required!");
-                    edtPassword.requestFocus();
+                    builder.setMessage("Please enter your password")
+                            .setTitle("Validation Error")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    edtPassword.setError("Password is required!");
+                                    edtPassword.requestFocus();
+                                    edtPassword.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                }
+                            });
+                    AlertDialog passwordDialog = builder.create();
+                    passwordDialog.show();
                     validate = false;
-                    edtPassword.setBackgroundResource(R.drawable.custom_box_border_failed);
                 }
+
+
                 if (validate) {
                     new FetchAuthenticatedUser().execute();
                 }
@@ -189,11 +203,24 @@ public class LoginStep2Fragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Password reset email sent", Toast.LENGTH_SHORT).show();
+                            builder.setMessage("Password reset email sent")
+                                    .setTitle("Success")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    });
                         } else {
-                            Toast.makeText(getContext(), "Failed to send reset email: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            builder.setMessage("Failed to send reset email: " + task.getException().getMessage())
+                                    .setTitle("Error")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    });
                         }
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 });
     }

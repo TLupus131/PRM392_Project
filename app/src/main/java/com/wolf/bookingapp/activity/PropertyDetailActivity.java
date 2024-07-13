@@ -1,6 +1,8 @@
 package com.wolf.bookingapp.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,14 +20,11 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wolf.bookingapp.R;
 import com.wolf.bookingapp.adapter.CommentAdapter;
 import com.wolf.bookingapp.adapter.IconAdapter;
@@ -46,14 +45,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
-
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -172,7 +168,14 @@ public class PropertyDetailActivity extends AppCompatActivity {
                     intent.putExtra("finalPrice", finalPrice);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(PropertyDetailActivity.this, "Please login to make a reservation", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PropertyDetailActivity.this);
+                    builder.setMessage("Please login to leave a comment!")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
         });
@@ -183,7 +186,14 @@ public class PropertyDetailActivity extends AppCompatActivity {
                 if (!edtComment.getText().toString().isEmpty() && authUser != null) {
                     addComment(edtComment.getText().toString(), authUser.getId(), property.getId());
                 } else if (authUser == null) {
-                    Toast.makeText(PropertyDetailActivity.this, "Please login to leave a comment!", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PropertyDetailActivity.this);
+                    builder.setMessage("Please login to leave a comment!")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
         });
@@ -298,13 +308,30 @@ public class PropertyDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(PropertyDetailActivity.this);
+                builder.setMessage("Comment added successfully!")
+                        .setTitle("Success")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        });
+                AlertDialog successDialog = builder.create();
+                successDialog.show();
                 edtComment.setText("");
-                Toast.makeText(PropertyDetailActivity.this, "Comment added successful!", Toast.LENGTH_LONG).show();
             }
+
 
             @Override
             public void onFailure(Call<CommentResponse> call, Throwable t) {
-                Toast.makeText(PropertyDetailActivity.this, "Failed to add comment: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(PropertyDetailActivity.this);
+                builder.setMessage("Failed to add comment: " + t.getMessage())
+                        .setTitle("Error")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        });
+                AlertDialog errorDialog = builder.create();
+                errorDialog.show();
             }
         });
     }

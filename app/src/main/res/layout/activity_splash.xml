@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:text="Booking.com"
+        android:text="BookingApp.com"
         android:textColor="@color/white"
         android:textSize="35dp"
         android:textStyle="bold"

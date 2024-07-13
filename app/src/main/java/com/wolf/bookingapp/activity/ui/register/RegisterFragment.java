@@ -1,5 +1,7 @@
 package com.wolf.bookingapp.activity.ui.register;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,22 +16,16 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.wolf.bookingapp.R;
-import com.wolf.bookingapp.activity.LoginActivity;
 import com.wolf.bookingapp.activity.ui.login.LoginStep2Fragment;
 import com.wolf.bookingapp.config.IPConfig;
 import com.wolf.bookingapp.config.UserAPI;
-import com.wolf.bookingapp.databinding.FragmentLoginStep2Binding;
 import com.wolf.bookingapp.databinding.FragmentRegisterBinding;
-import com.wolf.bookingapp.entity.User;
 import com.wolf.bookingapp.response.UserResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,9 +38,6 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.jetbrains.annotations.Async;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,53 +90,94 @@ public class RegisterFragment extends Fragment {
                 edtPassword.setBackgroundResource(R.drawable.custom_box_border_success);
                 edtConfirm.setBackgroundResource(R.drawable.custom_box_border_success);
                 rgGender.setBackgroundResource(R.drawable.custom_box_border_success);
-                boolean validate = true;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
                 if (TextUtils.isEmpty(edtEmail.getText().toString())) {
-                    Toast.makeText(getContext(), "Please enter your email", Toast.LENGTH_LONG).show();
-                    edtEmail.setError("Email is required!");
-                    edtEmail.requestFocus();
-                    edtEmail.setBackgroundResource(R.drawable.custom_box_border_failed);
-                    validate = false;
+                    builder.setMessage("Please enter your email")
+                            .setTitle("Validation Error")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    edtEmail.setError("Email is required!");
+                                    edtEmail.requestFocus();
+                                    edtEmail.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                }
+                            });
+                    AlertDialog emailDialog = builder.create();
+                    emailDialog.show();
+                    return;
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(edtEmail.getText().toString()).matches()) {
-                    Toast.makeText(getContext(), "Please re-enter your email", Toast.LENGTH_LONG).show();
-                    edtEmail.setError("Valid email is required");
-                    edtEmail.requestFocus();
-                    edtEmail.setBackgroundResource(R.drawable.custom_box_border_failed);
+                    builder.setMessage("Please re-enter your email")
+                            .setTitle("Validation Error")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    edtEmail.setError("Valid email is required");
+                                    edtEmail.requestFocus();
+                                    edtEmail.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                }
+                            });
+                    AlertDialog emailDialog = builder.create();
+                    emailDialog.show();
+                    return;
                 }
                 if (TextUtils.isEmpty(edtPassword.getText().toString())) {
-                    Toast.makeText(getContext(), "Please enter your password", Toast.LENGTH_LONG).show();
-                    edtPassword.setError("Password is required!");
-                    edtPassword.requestFocus();
-                    validate = false;
-                    edtPassword.setBackgroundResource(R.drawable.custom_box_border_failed);
+                    builder.setMessage("Please enter your password")
+                            .setTitle("Validation Error")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    edtPassword.setError("Password is required!");
+                                    edtPassword.requestFocus();
+                                    edtPassword.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                }
+                            });
+                    AlertDialog passwordDialog = builder.create();
+                    passwordDialog.show();
+                    return;
                 }
                 if (TextUtils.isEmpty(edtConfirm.getText().toString())) {
-                    Toast.makeText(getContext(), "Please confirm your password", Toast.LENGTH_LONG).show();
-                    edtConfirm.setError("Password confirmation is required!");
-                    edtConfirm.requestFocus();
-                    validate = false;
-                    edtConfirm.setBackgroundResource(R.drawable.custom_box_border_failed);
+                    builder.setMessage("Please confirm your password")
+                            .setTitle("Validation Error")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    edtConfirm.setError("Password confirmation is required!");
+                                    edtConfirm.requestFocus();
+                                    edtConfirm.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                }
+                            });
+                    AlertDialog confirmDialog = builder.create();
+                    confirmDialog.show();
+                    return;
                 } else if (!edtPassword.getText().toString().equals(edtConfirm.getText().toString())) {
-                    Toast.makeText(getContext(), "Passwords aren't match! Please input again.", Toast.LENGTH_LONG).show();
-                    edtConfirm.setError("Passwords do not match!");
-                    edtConfirm.requestFocus();
-                    edtPassword.clearComposingText();
-                    edtConfirm.clearComposingText();
-                    validate = false;
-                    edtConfirm.setBackgroundResource(R.drawable.custom_box_border_failed);
+                    builder.setMessage("Passwords don't match! Please input again.")
+                            .setTitle("Validation Error")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    edtPassword.setError("Passwords do not match!");
+                                    edtConfirm.setError("Passwords do not match!");
+                                    edtPassword.requestFocus();
+                                    edtPassword.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                    edtConfirm.clearComposingText();
+                                    edtConfirm.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                }
+                            });
+                    AlertDialog mismatchDialog = builder.create();
+                    mismatchDialog.show();
+                    return;
                 }
                 int selectedGenderId = rgGender.getCheckedRadioButtonId();
                 if (selectedGenderId == -1) {
-                    rgGender.setBackgroundResource(R.drawable.custom_box_border_failed);
-                    Toast.makeText(getContext(), "Please select your gender", Toast.LENGTH_LONG).show();
-                    validate = false;
-                } else {
-                    selectedGenderButton = view.findViewById(selectedGenderId);
+                    builder.setMessage("Please select your gender")
+                            .setTitle("Validation Error")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    rgGender.setBackgroundResource(R.drawable.custom_box_border_failed);
+                                }
+                            });
+                    AlertDialog genderDialog = builder.create();
+                    genderDialog.show();
+                    return;
                 }
-                if (validate) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    registerUser(edtEmail.getText().toString(), edtPassword.getText().toString(), selectedGenderButton.getText().toString());
-                }
+                progressBar.setVisibility(View.VISIBLE);
+                registerUser(edtEmail.getText().toString(), edtPassword.getText().toString(), selectedGenderButton.getText().toString());
             }
         });
     }
@@ -156,7 +190,15 @@ public class RegisterFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "User registration successful", Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("User registration successful")
+                                    .setTitle("Success")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    });
+                            AlertDialog successDialog = builder.create();
+                            successDialog.show();
                             FirebaseUser firebaseUser = auth.getCurrentUser();
                             firebaseUser.sendEmailVerification();
                             addUserToDatabase(email, password, gender);
@@ -178,7 +220,15 @@ public class RegisterFragment extends Fragment {
                                 edtEmail.setBackgroundResource(R.drawable.custom_box_border_failed);
                             } catch (Exception e) {
                                 Log.e(getTag(), e.getMessage());
-                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setMessage(e.getMessage())
+                                        .setTitle("Error")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                            }
+                                        });
+                                AlertDialog errorDialog = builder.create();
+                                errorDialog.show();
                             }
                             progressBar.setVisibility(View.GONE);
                         }
@@ -202,12 +252,29 @@ public class RegisterFragment extends Fragment {
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                Toast.makeText(getContext(), "User registed successful!", Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("User registered successfully!")
+                        .setTitle("Success")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        });
+                AlertDialog successDialog = builder.create();
+                successDialog.show();
             }
+
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Failed to registed user: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Failed to register user: " + t.getMessage())
+                        .setTitle("Error")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        });
+                AlertDialog errorDialog = builder.create();
+                errorDialog.show();
             }
         });
     }

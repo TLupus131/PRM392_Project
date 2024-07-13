@@ -102,12 +102,12 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                // No action needed here
+
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                // No action needed here
+
             }
         });
     }

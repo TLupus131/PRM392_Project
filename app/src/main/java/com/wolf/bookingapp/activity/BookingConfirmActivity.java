@@ -1,6 +1,8 @@
 package com.wolf.bookingapp.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.AsyncTask;
@@ -10,36 +12,19 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.wolf.bookingapp.R;
-import com.wolf.bookingapp.adapter.CommentAdapter;
 import com.wolf.bookingapp.adapter.IconAdapter;
-import com.wolf.bookingapp.config.CommentAPI;
 import com.wolf.bookingapp.config.IPConfig;
 import com.wolf.bookingapp.config.ReservationAPI;
-import com.wolf.bookingapp.entity.Comment;
 import com.wolf.bookingapp.entity.Property;
-import com.wolf.bookingapp.entity.Reservation;
 import com.wolf.bookingapp.entity.User;
 import com.wolf.bookingapp.entity.UserManager;
-import com.wolf.bookingapp.response.CommentResponse;
 import com.wolf.bookingapp.response.ReservationResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,11 +35,8 @@ import java.sql.Date;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -153,8 +135,16 @@ public class BookingConfirmActivity extends AppCompatActivity {
                 if (status) {
                     makeReservation();
                 } else {
-                    Toast.makeText(BookingConfirmActivity.this, "Xin lỗi quý khách hiện đã hết phòng trống!", Toast.LENGTH_LONG).show();
-                }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BookingConfirmActivity.this);
+                    builder.setMessage("Xin lỗi quý khách hiện đã hết phòng trống!")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();                }
             }
         });
     }
@@ -225,24 +215,52 @@ public class BookingConfirmActivity extends AppCompatActivity {
             public void onResponse(Call<ReservationResponse> call, Response<ReservationResponse> response) {
                 if (response.isSuccessful()) {
                     ReservationResponse reservationResponse = response.body();
-                    Toast.makeText(BookingConfirmActivity.this, "Reservation added successfully! ID: " + reservationResponse.getId(), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(BookingConfirmActivity.this, BookingDetailActivity.class);
-                    intent.putExtra("property", property);
-                    intent.putExtra("checkInDate", check_in_date.getText().toString());
-                    intent.putExtra("checkOutDate", check_out_date.getText().toString());
-                    intent.putExtra("price", finalPrice);
-                    intent.putExtra("reservationId", reservationResponse.getId());
-                    progressBar.setVisibility(View.GONE);
-                    startActivity(intent);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BookingConfirmActivity.this);
+                    builder.setMessage("Reservation added successfully! ID: " + reservationResponse.getId())
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(BookingConfirmActivity.this, BookingDetailActivity.class);
+                                    intent.putExtra("property", property);
+                                    intent.putExtra("checkInDate", check_in_date.getText().toString());
+                                    intent.putExtra("checkOutDate", check_out_date.getText().toString());
+                                    intent.putExtra("price", finalPrice);
+                                    intent.putExtra("reservationId", reservationResponse.getId());
+                                    progressBar.setVisibility(View.GONE);
+                                    startActivity(intent);
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 } else {
-                    Toast.makeText(BookingConfirmActivity.this, "Failed to add reservation", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BookingConfirmActivity.this);
+                    builder.setMessage("Failed to add reservation")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             }
 
             @Override
             public void onFailure(Call<ReservationResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(BookingConfirmActivity.this, "Failed to add reservation: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(BookingConfirmActivity.this);
+                builder.setMessage("Failed to add reservation: " + t.getMessage())
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
     }

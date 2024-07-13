@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="Booking.com"
+            android:text="BookingApp.com"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:layout_gravity="center"

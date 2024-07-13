@@ -7,21 +7,21 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.bookingapp.activity.ui.home.HomeFragment"
+        android:name="com.wolf.bookingapp.activity.ui.home.HomeFragment"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_bookmark"
-        android:name="com.example.bookingapp.activity.ui.bookmark.BookmarkFragment"
+        android:name="com.wolf.bookingapp.activity.ui.bookmark.BookmarkFragment"
         tools:layout="@layout/fragment_bookmark" />
 
     <fragment
         android:id="@+id/navigation_reservation"
-        android:name="com.example.bookingapp.activity.ui.reservation.ReservationFragment"
+        android:name="com.wolf.bookingapp.activity.ui.reservation.ReservationFragment"
         tools:layout="@layout/fragment_reservation" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.example.bookingapp.activity.ui.setting.SettingsFragment"
+        android:name="com.wolf.bookingapp.activity.ui.setting.SettingsFragment"
         tools:layout="@layout/fragment_settings" />
 </navigation>

@@ -1,6 +1,8 @@
 package com.wolf.bookingapp.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -17,10 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.wolf.bookingapp.R;
 import com.wolf.bookingapp.config.IPConfig;
 import com.wolf.bookingapp.config.UserAPI;
@@ -29,13 +28,11 @@ import com.wolf.bookingapp.entity.UserManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -231,31 +228,48 @@ public class AccountManagerActivity extends AppCompatActivity {
         }
         if (call != null) {
             call.enqueue(new Callback<Void>() {
-                @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
-                    Toast.makeText(AccountManagerActivity.this, "Updated user successful!", Toast.LENGTH_LONG).show();
-                    UserManager.getInstance().setAuthUser(user);
-                    if (!type.equals("Mật khẩu") && !type.equals("Giới tính") && !type.equals("Ngày sinh")) {
-                        tvHolder.setText(holder);
-                        tvHolder.setTextColor(Color.BLACK);
-                        tvHolder.setTypeface(null, Typeface.BOLD);
-                    } else if (type.equals("Giới tính")) {
-                        if (holder.equals("male")) {
-                            tvHolder.setText("Nam");
-                        } else {
-                            tvHolder.setText("Nữ");
-                        }
-                    } else if (type.equals("Ngày sinh")) {
-                        tvHolder.setText(formatDateString(holder));
-                        tvHolder.setTextColor(Color.BLACK);
-                        tvHolder.setTypeface(null, Typeface.BOLD);
-                    }
-                    dialog.cancel();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AccountManagerActivity.this);
+                    builder.setMessage("Updated user successful!")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                    UserManager.getInstance().setAuthUser(user);
+                                    if (!type.equals("Mật khẩu") && !type.equals("Giới tính") && !type.equals("Ngày sinh")) {
+                                        tvHolder.setText(holder);
+                                        tvHolder.setTextColor(Color.BLACK);
+                                        tvHolder.setTypeface(null, Typeface.BOLD);
+                                    } else if (type.equals("Giới tính")) {
+                                        if (holder.equals("male")) {
+                                            tvHolder.setText("Nam");
+                                        } else {
+                                            tvHolder.setText("Nữ");
+                                        }
+                                    } else if (type.equals("Ngày sinh")) {
+                                        tvHolder.setText(formatDateString(holder));
+                                        tvHolder.setTextColor(Color.BLACK);
+                                        tvHolder.setTypeface(null, Typeface.BOLD);
+                                    }
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(AccountManagerActivity.this, "Failed to update user: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AccountManagerActivity.this);
+                    builder.setMessage("Failed to update user: " + t.getMessage())
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
             });
         }
@@ -534,7 +548,16 @@ public class AccountManagerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(editTextHolder.getText().toString())) {
-                    Toast.makeText(dialog.getContext(), "Please enter your " + tvName, Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(dialog.getContext());
+                    builder.setMessage("Please enter your " + tvName)
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
                     editTextHolder.setError(tvName + " is required!");
                     editTextHolder.requestFocus();
                     editTextHolder.setBackgroundResource(R.drawable.custom_box_border_failed);

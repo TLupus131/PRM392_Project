@@ -1,6 +1,8 @@
 package com.wolf.bookingapp.activity.ui.stay;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,32 +22,25 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.wolf.bookingapp.config.IPConfig;
 import com.wolf.bookingapp.R;
 import com.wolf.bookingapp.activity.ListPropertyActivity;
-import com.wolf.bookingapp.adapter.FutureTripAdapter;
 import com.wolf.bookingapp.adapter.RegionAdapter;
 import com.wolf.bookingapp.databinding.FragmentStayBinding;
-import com.wolf.bookingapp.entity.FutureTrip;
 import com.wolf.bookingapp.entity.Region;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.datepicker.MaterialDatePicker.Builder;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -132,8 +127,16 @@ public class StayFragment extends Fragment {
                 if (!btnChooseLocation.getText().toString().equalsIgnoreCase("Nhập điểm đến của bạn")) {
                     searhProperties();
                 } else {
-                    Toast.makeText(getContext(), "Vui lòng nhập điểm đến bạn mong muốn", Toast.LENGTH_LONG).show();
-                }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage("Vui lòng nhập điểm đến bạn mong muốn")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();                }
             }
         });
     }

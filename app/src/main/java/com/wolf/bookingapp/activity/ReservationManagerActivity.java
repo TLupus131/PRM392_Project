@@ -9,15 +9,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -350,16 +345,35 @@ public class ReservationManagerActivity extends AppCompatActivity {
         ReservationAPI reservationAPI = retrofit.create(ReservationAPI.class);
         Call<Void> call = reservationAPI.delete(id);
         call.enqueue(new Callback<Void>() {
+
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(ReservationManagerActivity.this, "Deleted reservation successful!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(ReservationManagerActivity.this, MainActivity.class);
-                startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReservationManagerActivity.this);
+                builder.setMessage("Deleted reservation successful!")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                Intent intent = new Intent(ReservationManagerActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ReservationManagerActivity.this, "Failed to delete reservation: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReservationManagerActivity.this);
+                builder.setMessage("Failed to delete reservation: " + t.getMessage())
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
     }
@@ -380,21 +394,39 @@ public class ReservationManagerActivity extends AppCompatActivity {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(ReservationManagerActivity.this, "Updated reservation successful!", Toast.LENGTH_LONG).show();
-                Calendar checkInCal = Calendar.getInstance();
-                checkInCal.setTime(holderCheckInDate);
-                Calendar checkOutCal = Calendar.getInstance();
-                checkOutCal.setTime(holderCheckOutDate);
-                setText(checkInCal, checkOutCal);
-                currentCheckInDate = holderCheckInDate;
-                currentCheckOutDate = holderCheckOutDate;
-                progressBar.setVisibility(View.GONE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReservationManagerActivity.this);
+                builder.setMessage("Updated reservation successful!")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                Calendar checkInCal = Calendar.getInstance();
+                                checkInCal.setTime(holderCheckInDate);
+                                Calendar checkOutCal = Calendar.getInstance();
+                                checkOutCal.setTime(holderCheckOutDate);
+                                setText(checkInCal, checkOutCal);
+                                currentCheckInDate = holderCheckInDate;
+                                currentCheckOutDate = holderCheckOutDate;
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ReservationManagerActivity.this, "Failed to update reservation: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                progressBar.setVisibility(View.GONE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReservationManagerActivity.this);
+                builder.setMessage("Failed to update reservation: " + t.getMessage())
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
     }
